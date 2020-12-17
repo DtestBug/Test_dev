@@ -16,7 +16,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -24,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '79qnm(sc@25cx6(gqmy_d!16$f83e^1w!5e1m21-z(#bew)1@t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -40,28 +39,33 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
 
-
     # 用户注册
     'register',
+    # 'register.apps.AppConfig',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'utils.handle_middilewares.DeclineSpidersMiddleware'
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'Test_dev.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, '/dist')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,9 +77,10 @@ TEMPLATES = [
         },
     },
 ]
+# 前端静态文件配置路径
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "/dist/static")]
 
 WSGI_APPLICATION = 'Test_dev.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -83,18 +88,16 @@ WSGI_APPLICATION = 'Test_dev.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test_dev',
-        'HOST': '127.0.0.1',
+        'NAME': 'login_db',
+        'HOST': 'db',
         'PORT': '3306',
         'USER': 'root',
         'PASSWORD': '123456',
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -110,19 +113,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
 LANGUAGE_CODE = 'zh-Hans'
 
 TIME_ZONE = 'Asia/Shanghai'
+
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -130,37 +132,54 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
-'NON_FIELD_ERRORS_KEY': 'errors',
+    'NON_FIELD_ERRORS_KEY': 'errors',
 
-# 可以修改默认的渲染类（处理返回的数据形式）
-# 列表中的元素有优先级，第一个元素的优先级最高
-'DEFAULT_RENDERER_CLASSES': [
-    'rest_framework.renderers.JSONRenderer',
-    'rest_framework.renderers.BrowsableAPIRenderer',
-],
-'DEFAULT_FILTER_BACKENDS': [
-    'django_filters.rest_framework.backends.DjangoFilterBackend',
-    'rest_framework.filters.OrderingFilter',
-],  # 指定所有视图公用的过滤引擎，如果视图中指定了过滤引擎就使用视图当中的过滤引擎
+    # 可以修改默认的渲染类（处理返回的数据形式）
+    # 列表中的元素有优先级，第一个元素的优先级最高
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.backends.DjangoFilterBackend',
+        'rest_framework.filters.OrderingFilter',
+    ],  # 指定所有视图公用的过滤引擎，如果视图中指定了过滤引擎就使用视图当中的过滤引擎
 
-# 可以试用默认的分页引擎类PageNumberPagination
-'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',  # 分页功能
-# 必须指定每一页的数据数量
-'PAGE_SIZE': 10,
+    # 可以试用默认的分页引擎类PageNumberPagination
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',  # 分页功能
+    # 必须指定每一页的数据数量
+    'PAGE_SIZE': 10,
 
-'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.AutoSchema',  # 解决打开接口文档地址时候报错get_link
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.AutoSchema',  # 解决打开接口文档地址时候报错get_link
 
-# 认证与权限
-'DEFAULT_AUTHENTICATION_CLASSES': [  # 默认的认证类
-    'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # 指定使用jwt_token认证方式
-    'rest_framework.authentication.SessionAuthentication',  # 会话认证
-    'rest_framework.authentication.BasicAuthentication'  # 基本认证（用户名和密码认证）
-],
+    # 认证与权限
+    'DEFAULT_AUTHENTICATION_CLASSES': [  # 默认的认证类
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # 指定使用jwt_token认证方式
+        'rest_framework.authentication.SessionAuthentication',  # 会话认证
+        'rest_framework.authentication.BasicAuthentication'  # 基本认证（用户名和密码认证）
+    ],
 
-# 登录权限设置，账户级别实在auth_user内的is_staff设置
-# 'DEFAULT_PERMISSION_CLASSES': [  # 默认的权限类
-    # 'rest_framework.permissions.AllowAny',  # AllowAny不需要登录就有任意权限
-    # 'rest_framework.permissions.IsAuthenticated',  # IsAuthenticated只要登录就有任意权限
-    # 'rest_framework.permissions.IsAdminUser',  # IsAdminUser只有管理员账号登录就有任意权限
-# ],
+    # 登录权限设置，账户级别实在auth_user内的is_staff设置
+    'DEFAULT_PERMISSION_CLASSES': [  # 默认的权限类
+        'rest_framework.permissions.AllowAny',  # AllowAny不需要登录就有任意权限
+        # 'rest_framework.permissions.IsAuthenticated',  # IsAuthenticated只要登录就有任意权限
+        # 'rest_framework.permissions.IsAdminUser',  # IsAdminUser只有管理员账号登录就有任意权限
+    ],
 }
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+CORS_ORIGIN_WHITELIST = (
+    '8.131.51.224:8440',
+)
+
+# CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
+
+CORS_ALLOW_HEADERS = (
+    'x-requested-with',
+    'content-type',
+    'accept',
+    'origin',
+    'authorization',
+    'x-csrftoken'
+)

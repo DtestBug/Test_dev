@@ -2,17 +2,18 @@ from .serializers import RegisterSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.generics import CreateAPIView
 from django.contrib.auth.models import User
-from django.contrib import messages
+import requests
 
-
-class RegisterView(APIView):
-    def post(self, request, *args, **kwargs):
-        serializer = RegisterSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+# class RegisterView(APIView):
+#     def post(self, request, *args, **kwargs):
+#         serializer = RegisterSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+class RegisterView(CreateAPIView):
+    serializer_class = RegisterSerializer
 
 
 class UserDataView(APIView):
@@ -40,3 +41,14 @@ class UserDatasView(APIView):  # 获取数据库所有参数
     def get(self, request):
         datas = User.objects.values()
         return Response(datas)
+
+
+class SloganView(APIView):
+
+    def get(self, request):
+        url = "http://www.yogapi.com/api/getPresentQuote.php"
+        data = requests.get(url).json()['quote']
+        dict = {
+            'data': data
+        }
+        return Response(dict)

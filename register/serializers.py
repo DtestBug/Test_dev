@@ -5,6 +5,7 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
 from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handler
 
+
 class RegisterSerializer(serializers.ModelSerializer):
     locale.setlocale(locale.LC_CTYPE, 'chinese')  # 设置本地为简体中文，可以识别时间中的年月日
     datetime_fmt = '%Y年%m月%d日 %H:%M:%S'
