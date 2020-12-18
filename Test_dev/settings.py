@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import datetime
 from pathlib import Path
 import os
 
@@ -78,7 +78,7 @@ TEMPLATES = [
     },
 ]
 # 前端静态文件配置路径
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "/dist/static")]
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, "/dist/static")]
 
 WSGI_APPLICATION = 'Test_dev.wsgi.application'
 
@@ -161,8 +161,8 @@ REST_FRAMEWORK = {
 
     # 登录权限设置，账户级别实在auth_user内的is_staff设置
     'DEFAULT_PERMISSION_CLASSES': [  # 默认的权限类
-        'rest_framework.permissions.AllowAny',  # AllowAny不需要登录就有任意权限
-        # 'rest_framework.permissions.IsAuthenticated',  # IsAuthenticated只要登录就有任意权限
+        # 'rest_framework.permissions.AllowAny',  # AllowAny不需要登录就有任意权限
+        'rest_framework.permissions.IsAuthenticated',  # IsAuthenticated只要登录就有任意权限
         # 'rest_framework.permissions.IsAdminUser',  # IsAdminUser只有管理员账号登录就有任意权限
     ],
 }
@@ -170,7 +170,7 @@ REST_FRAMEWORK = {
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 CORS_ORIGIN_WHITELIST = (
-    '8.131.51.224:8440',
+    '8.131.51.224:8000',
 )
 
 # CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
@@ -183,3 +183,19 @@ CORS_ALLOW_HEADERS = (
     'authorization',
     'x-csrftoken'
 )
+
+# 在全局配置JWT_AUTH中，可以覆盖JWT相关的参数
+JWT_AUTH = {
+    # 指定处理登录接口响应数据的函数
+    'JWT_RESPONSE_PAYLOAD_HANDLER':
+    'utils.jwt_handle.jwt_response_payload_handler',
+
+    # 前端用户访问一些需要认证之后的接口，那么默认需要在请求头中携带参数，
+    # 请求key为Authorization，值为前缀 + 空格 + token值，如：JWT xxxssdhdsohsoshsohs
+
+    # 可以指定token过期时间，默认为5分钟
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+
+    # 指定前端传递token值的前缀
+    # 'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+}
