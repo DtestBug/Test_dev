@@ -23,8 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '79qnm(sc@25cx6(gqmy_d!16$f83e^1w!5e1m21-z(#bew)1@t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -39,9 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
 
-    # 用户注册
-    'register',
-    # 'register.apps.AppConfig',
+
+    'register',  # 用户注册
+    'reptile',  # 爬虫
+    'data_detection',  # 数据检测
+
 ]
 
 MIDDLEWARE = [
@@ -54,7 +56,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'utils.handle_middilewares.DeclineSpidersMiddleware'
+    # 'utils.handle_middilewares.DeclineSpidersMiddleware'  # 禁止爬虫
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -85,11 +87,22 @@ WSGI_APPLICATION = 'Test_dev.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'test_dev',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3306',
+#         'USER': 'root',
+#         'PASSWORD': '123456',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'login_db',
-        'HOST': 'db',
+        'NAME': 'test_dev',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
         'USER': 'root',
         'PASSWORD': '123456',
@@ -161,8 +174,8 @@ REST_FRAMEWORK = {
 
     # 登录权限设置，账户级别实在auth_user内的is_staff设置
     'DEFAULT_PERMISSION_CLASSES': [  # 默认的权限类
-        # 'rest_framework.permissions.AllowAny',  # AllowAny不需要登录就有任意权限
-        'rest_framework.permissions.IsAuthenticated',  # IsAuthenticated只要登录就有任意权限
+        'rest_framework.permissions.AllowAny',  # AllowAny不需要登录就有任意权限
+        # 'rest_framework.permissions.IsAuthenticated',  # IsAuthenticated只要登录就有任意权限
         # 'rest_framework.permissions.IsAdminUser',  # IsAdminUser只有管理员账号登录就有任意权限
     ],
 }

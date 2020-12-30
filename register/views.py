@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from django.contrib.auth.models import User
-import requests
+
 
 # class RegisterView(APIView):
 #     def post(self, request, *args, **kwargs):
@@ -43,12 +43,3 @@ class UserDatasView(APIView):  # 获取数据库所有参数
         return Response(datas)
 
 
-class SloganView(APIView):
-
-    def get(self, request):
-        url = "http://www.yogapi.com/api/getPresentQuote.php"
-        data = requests.get(url).json()['quote']
-        dict = {
-            'data': data
-        }
-        return Response(dict)
