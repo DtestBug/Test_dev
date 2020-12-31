@@ -23,8 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '79qnm(sc@25cx6(gqmy_d!16$f83e^1w!5e1m21-z(#bew)1@t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -182,9 +182,9 @@ REST_FRAMEWORK = {
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-CORS_ORIGIN_WHITELIST = (
-    '8.131.51.224:8000',
-)
+# CORS_ORIGIN_WHITELIST = (
+#     '8.131.51.224:8000',
+# )
 
 # CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
 
