@@ -1,0 +1,45 @@
+
+# 套件中所有用例的全局配置
+config:
+    # 指定套件名称
+    name: "接口测试套件"
+#    variables:
+#        device_sn: "XYZ"
+    base_url: "http://127.0.0.1:8000"
+
+testcases:
+-
+    # 指定用例名称
+    name: 登录接口测试
+    # 指定测试用例文件
+    testcase: testcases/login.yml
+    # 定义参数化（数据驱动）
+    parameters:
+        # 1.参数名之间使用”-“来分割
+        # 2.参数值与参数名之间为一一对应关系
+        # 3.parameters下定义的变量优先级最高
+
+        # 方式一：直接在yaml配置文件中进行参数化
+#        - title-username-password-status_code-contain_msg:
+#              # contain_msg对应的值可以在DEBUG    extract: content       => 查看其key名称
+#              - ["正常登录", "test", "123456", 200, "token"]
+#              - ["密码错误", "test", "111111", 400, "errors"]
+#              - ["账号错误", "teee", "123456", 400, "errors"]
+#              - ["用户为空", "", "123456", 400, "username"]
+#              - ["密码为空", "test", "", 400, "password"]
+
+        # 方式二：直接在yaml配置文件中进行参数化,P的意思是参数，很少使用csv方式
+        # 1.${P(csv文件路径)}来调用
+
+#        - title-username-password-status_code-contain_msg: ${P(data/login.csv)}
+
+        # 方式三：可以调用函数，用的最广泛的一种，需要在debugtalk.py内定义方法
+        # 1.函数需要返回一个嵌套字典的列表
+        # 2.字典的key需要与参数名保持一致
+        - title-username-password-status_code-contain_msg: ${get_accounts()}
+
+#-
+#    name: call demo_testcase with data 2
+#    testcase: path/to/get_projects_list.yml
+#    variables:
+#        device_sn: $device_sn

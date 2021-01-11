@@ -1,0 +1,17 @@
+
+config:
+    name: "登录接口"
+    base_url: "http://www.longboard-jg.ltd:8000"
+    variables:
+        username: "jiuge1"
+        password: "123456"
+        contain_msg: "token"
+        status_code: 200
+
+teststeps:
+-
+    name: "$title"
+    api: api/login.yml
+    validate:
+        - contains: ["content", "$contain_msg"]
+        - {"check": "status_code", "comparator": "eq", "expect": $status_code}

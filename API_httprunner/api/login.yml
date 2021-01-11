@@ -1,0 +1,63 @@
+# 指定当前接口名称
+name: 登录接口
+
+# 网站后端地址
+base_url: "http://www.longboard-jg.ltd:8000"
+
+# 指定当前用例需要用到的变量
+#variables:
+#    # 定义两个变量
+#    # 变量名：变量值
+#    # 可以在定义语句的下方任意调用变量格式为：$变量名，例：$uname
+#    # 第一种格式
+#    # uname: "lemon1"
+#    # passwd: "123456"
+#    # 第二种格式,ENV是项目文件下的环境变量文件
+#    username: "${ENV(USERNAME)}"
+#    password: "${ENV(PASSWORD)}"
+
+#指定接口的请求信息
+request:
+
+    # 指定请求的url路径
+    url: /user/login/
+
+    # 请求方式，大小写都可以
+    method: POST
+
+    # 指定请求头信息
+    headers:
+        # User-Aget传参不能传入汉字，get_random_user_agent方法来源于项目文件夹下的debugtalk.py
+        User-Aget: "${get_random_user_agent()}"
+        # 查看debug级，需要注释掉Content-Type
+#        Content-Type: "application/json"
+    # json区域来指定json格式的请求参数
+    # data区域来指定form表的请求参数
+    # files区域来指定文件请求参数
+    # params区域来指定查询字符串参数
+    data:
+        # username: "test"
+        # 调用上面的uname，前面加$
+        username: $username
+        # password: "123456"
+        password: $password
+
+# 来指定断言方式
+validate:
+    # “-”代表列表
+    # eq指定做相等断言
+    # 列表内的字段意思：前面的是实际值，后边的期望值[实际值， 期望值]
+    # 字典获取值：content或者text或者json.字典key
+    - eq: ["status_code", 200]
+    # 如果实际值不存在，则会报错并提示:   available response attributes: status_code, cookies, elapsed, headers, content, text, json, encoding, ok, reason, url
+    # 断言值只能从以上结果内取
+    # - eq: ["sad", 200]
+    # 第二种写法, 规定写法
+
+
+# 执行用例方法：
+#    1.在Terminal控制台下执行hrun yaml配置文件（json配置文件）的相对路径或者绝对路径
+#    2.hrun D:\Py_Projects\learn_httprunner\api\api_testsuite.yml
+#    3.或者httprunner也可以
+#    4.执行后的“.”代表执行成功/F代表失败/1代表错误
+#    5.报告模块主题更换可以执行httprunner --report-template REPORT_TEMPLATE
