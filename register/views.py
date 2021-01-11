@@ -17,6 +17,7 @@ class RegisterView(CreateAPIView):
 
 
 class UserDataView(APIView):
+
     def get(self, request, username):
         if User.objects.filter(username=username).count() >= 1:  # 判断该查找出的数据存在于数据库
             email = User.objects.values('email').get(username=username)['email']  # 获取数据库内名字为xx的邮箱

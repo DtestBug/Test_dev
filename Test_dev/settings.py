@@ -23,8 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '79qnm(sc@25cx6(gqmy_d!16$f83e^1w!5e1m21-z(#bew)1@t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'register',  # 用户注册
     'reptile',  # 爬虫
     'data_detection',  # 数据检测
+    'pets',
 
 ]
 
@@ -155,7 +156,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.backends.DjangoFilterBackend',
-        'rest_framework.filters.OrderingFilter',
+        # 'rest_framework.filters.OrderingFilter',
     ],  # 指定所有视图公用的过滤引擎，如果视图中指定了过滤引擎就使用视图当中的过滤引擎
 
     # 可以试用默认的分页引擎类PageNumberPagination
