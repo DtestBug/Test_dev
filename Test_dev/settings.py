@@ -137,8 +137,8 @@ TIME_ZONE = 'Asia/Shanghai'
 USE_I18N = True
 
 USE_L10N = True
-
-USE_TZ = True
+# 时区，False为本地
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -156,7 +156,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.backends.DjangoFilterBackend',
-        # 'rest_framework.filters.OrderingFilter',
+        # 'rest_framework.filters.OrderingFilter',  # 不太适合在全局使用
     ],  # 指定所有视图公用的过滤引擎，如果视图中指定了过滤引擎就使用视图当中的过滤引擎
 
     # 可以试用默认的分页引擎类PageNumberPagination

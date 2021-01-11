@@ -2,6 +2,7 @@ from rest_framework import serializers  # 序列化
 from rest_framework.validators import UniqueValidator
 from .models import PetsModels
 from utils.is_number import isnumber
+import datetime
 
 
 class PetSerializer(serializers.ModelSerializer):
@@ -14,8 +15,8 @@ class PetSerializer(serializers.ModelSerializer):
         # 已有字段再加限制
         extra_kwargs = {
             'name': {
-                'label': '名字',
-                'help_text': '宠物的名字',
+                'label': 'name',
+                # 'help_text': '宠物的名字',
                 'min_length': 1,
                 'max_length': 10,
                 # 'write_only': False,  # 为True的时候不返回到json
@@ -28,8 +29,8 @@ class PetSerializer(serializers.ModelSerializer):
                         },
 
             'weight': {
-                'label': '体重',
-                'help_text': '宠物的当前体重',
+                'label': 'weight',
+                # 'help_text': '宠物的当前体重',
 
                 # 'write_only': False,  # 为True的时候不返回到json
                 'required': False,   # 为True输入时必填字段
@@ -41,22 +42,20 @@ class PetSerializer(serializers.ModelSerializer):
                 }
                      },
 
-            'age': {
-                'label': '年龄',
-                'help_text': '宠物出生到现在多久',
+            'birthday': {
+                'label': 'birthday',
+                # 'help_text': '宠物出生到现在多久',
 
                 # 'write_only': False,  # 为True的时候不返回到json
                 'required': False,  # 为True输入时必填字段
-                'min_length': 1,
-                'max_length': 3,
                 'error_messages': {
                     'min_length': '最少输入1个字符',
                     'max_length': '输入不能超出3个字符'
                                     }
                         },
             'varieties': {
-                'label': '品种',
-                'help_text': '宠物是什么品种',
+                'label': 'varieties',
+                # 'help_text': '宠物是什么品种',
 
                 # 'write_only': False,  # 为True的时候不返回到json
                 'required': False,  # 为True输入时必填字段
@@ -67,8 +66,8 @@ class PetSerializer(serializers.ModelSerializer):
             },
 
             'color': {
-                'label': '颜色',
-                'help_text': '宠物的颜色',
+                'label': 'color',
+                # 'help_text': '宠物的颜色',
 
                 # 'write_only': False,  # 为True的时候不返回到json
                 'required': False,  # 为True输入时必填字段
@@ -90,11 +89,12 @@ class PetSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("请输入数字")
 
     @classmethod  # 将方法静态，需要将self改为cls
-    def validate_age(cls, value):
-        if isnumber(value):
-            return value
+    def validate_birthday(cls, value):
+        # isinstance判断value是否时间类型
+        if isinstance(value, datetime.date):
+            return str(value)
         else:
-            raise serializers.ValidationError("请输入数字")
+            raise serializers.ValidationError("非日期类型")
 
 
 
