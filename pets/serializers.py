@@ -93,6 +93,7 @@ class PetSerializer(serializers.ModelSerializer):
         # isinstance判断value是否时间类型
         if isinstance(value, datetime.date):
             return str(value)
+
         else:
             raise serializers.ValidationError("非日期类型")
 
