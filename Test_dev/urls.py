@@ -19,10 +19,10 @@ from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user/', include('register.urls')),
-    path('reptile/', include('reptile.urls')),
-    path('data_detection/', include('data_detection.urls')),
-    path('pets/', include('pets.urls')),
+    path('', include('register.urls')),
+    path('', include('reptile.urls')),
+    # path('', include('data_detection.urls')),
+    path('', include('pets.urls')),
 
     # 必须有rest_framework的路由
     path('api/', include('rest_framework.urls')),

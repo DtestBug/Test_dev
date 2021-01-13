@@ -23,14 +23,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '79qnm(sc@25cx6(gqmy_d!16$f83e^1w!5e1m21-z(#bew)1@t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,7 +43,7 @@ INSTALLED_APPS = [
 
     'register',  # 用户注册
     'reptile',  # 爬虫
-    'data_detection',  # 数据检测
+    # 'data_detection',  # 数据检测
     'pets',
 
 ]
@@ -59,8 +60,15 @@ MIDDLEWARE = [
 
     # 'utils.handle_middilewares.DeclineSpidersMiddleware'  # 禁止爬虫
 ]
-
+# 4.添加白名单
+# CORS_ORIGIN_ALLOW_ALL为True, 指定所有域名(ip)都可以访问后端接口, 默认为False
 CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST指定能够访问后端接口的ip或域名列表
+# CORS_ORIGIN_WHITELIST = [
+#     "http://127.0.0.1:9000",
+#     "http://localhost:9000",
+# ]
+# 允许跨域时携带Cookie, 默认为False
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'Test_dev.urls'
@@ -88,6 +96,17 @@ WSGI_APPLICATION = 'Test_dev.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'login_db',
+        'HOST': 'db',
+        'PORT': '3306',
+        'USER': 'root',
+        'PASSWORD': '123456',
+    }
+}
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
@@ -98,17 +117,6 @@ WSGI_APPLICATION = 'Test_dev.wsgi.application'
 #         'PASSWORD': '123456',
 #     }
 # }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test_dev',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-        'USER': 'root',
-        'PASSWORD': '123456',
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -182,21 +190,6 @@ REST_FRAMEWORK = {
 }
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-# CORS_ORIGIN_WHITELIST = (
-#     '8.131.51.224:8000',
-# )
-
-# CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
-
-CORS_ALLOW_HEADERS = (
-    'x-requested-with',
-    'content-type',
-    'accept',
-    'origin',
-    'authorization',
-    'x-csrftoken'
-)
 
 # 在全局配置JWT_AUTH中，可以覆盖JWT相关的参数
 JWT_AUTH = {
