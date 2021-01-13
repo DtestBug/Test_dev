@@ -76,8 +76,8 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop('password_confirm')
 
-        # 创建数据到表
-        user = User.objects.create(**validated_data)
+        # 创建数据到表,创建用户时一定要用User.objects.create_user，少一个_user不会报错，但是密码不会加密
+        user = User.objects.create_user(**validated_data)
 
         # 创建用户token
         payload = jwt_payload_handler(user)

@@ -81,7 +81,7 @@ TEMPLATES = [
     },
 ]
 # 前端静态文件配置路径
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, "/dist/static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "/dist/static")]
 
 WSGI_APPLICATION = 'Test_dev.wsgi.application'
 
