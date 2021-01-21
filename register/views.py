@@ -4,6 +4,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from django.contrib.auth.models import User
+from rest_framework import permissions
+from rest_framework import mixins
+from rest_framework.generics import GenericAPIView
 
 
 # class RegisterView(APIView):
@@ -14,6 +17,19 @@ from django.contrib.auth.models import User
 #         return Response(serializer.data, status=status.HTTP_201_CREATED)
 class RegisterView(CreateAPIView):
     serializer_class = RegisterSerializer
+
+
+class UserView(mixins.DestroyModelMixin,
+               GenericAPIView
+               ):
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+    lookup_field = "username"  # 指定查询字段
+
+    def delete(self, request, *args, **kwargs):
+        User.objects.filter(username=kwargs)  # kwargs用户名
+        return self.destroy(request, *args, **kwargs)
 
 
 class UserDataView(APIView):

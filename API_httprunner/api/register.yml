@@ -1,0 +1,35 @@
+# 指定当前接口名称
+name: 注册接口
+
+# 网站后端地址
+base_url: "http://www.longboard-jg.ltd:8000"
+
+#指定接口的请求信息
+request:
+
+    # 指定请求的url路径
+    url: /register/
+
+    # 请求方式，大小写都可以
+    method: POST
+
+    # 指定请求头信息
+    headers:
+        # User-Aget传参不能传入汉字，get_random_user_agent方法来源于项目文件夹下的debugtalk.py
+        User-Aget: "${get_random_user_agent()}"
+
+    data:
+        # username: "test"
+        # 调用上面的uname，前面加$
+        username: $username
+        # password: "123456"
+        password: $password
+
+        password_confirm: $password_confirm
+
+        email: $email
+
+# 来指定断言方式
+validate:
+    # 字典获取值：content或者text或者json.字典key
+    - eq: ["status_code", 201]

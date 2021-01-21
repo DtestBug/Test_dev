@@ -20,7 +20,7 @@ base_url: "http://www.longboard-jg.ltd:8000"
 request:
 
     # 指定请求的url路径
-    url: /user/login/
+    url: /login/
 
     # 请求方式，大小写都可以
     method: POST

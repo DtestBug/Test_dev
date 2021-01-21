@@ -5,7 +5,7 @@ config:
     name: "接口测试套件"
 #    variables:
 #        device_sn: "XYZ"
-    base_url: "http://127.0.0.1:8000"
+    base_url: "http://www.longboard-jg.ltd:8000"
 
 testcases:
 -
@@ -37,9 +37,19 @@ testcases:
         # 1.函数需要返回一个嵌套字典的列表
         # 2.字典的key需要与参数名保持一致
         - title-username-password-status_code-contain_msg: ${get_accounts()}
+#        - title-username-password-status_code-contain_msg: ${get_register()}
 
 #-
 #    name: call demo_testcase with data 2
 #    testcase: path/to/get_projects_list.yml
 #    variables:
 #        device_sn: $device_sn
+
+-
+    # 指定用例名称
+    name: 注册接口测试
+    # 指定测试用例文件
+    testcase: testcases/register.yml
+    # 定义参数化（数据驱动）
+    parameters:
+        - title-username-password-password_confirm-email-status_code-contain_msg: ${get_register()}

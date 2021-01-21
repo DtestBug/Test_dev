@@ -8,6 +8,8 @@ urlpatterns = [
     path(r'userdatas/', views.UserDatasView.as_view()),
     path(r'userdata/<username>', views.UserDataView.as_view()),
 
+    path(r'register/<username>', views.UserView.as_view()),
+
 ]
 
 

@@ -83,3 +83,4 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         # 创建用户
         return user
+
