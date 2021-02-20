@@ -23,6 +23,8 @@ urlpatterns = [
     path('', include('reptile.urls')),
     # path('', include('data_detection.urls')),
     path('', include('pets.urls')),
+    path('', include('payment.urls')),
+    path('', include('project.urls')),
 
     # 必须有rest_framework的路由
     path('api/', include('rest_framework.urls')),

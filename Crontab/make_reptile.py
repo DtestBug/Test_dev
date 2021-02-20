@@ -3,7 +3,7 @@ import smtplib  # 负责发送邮件
 from email.mime.text import MIMEText  # MIMEText构造协议
 from email.mime.multipart import MIMEMultipart  # 添加邮件附件
 import requests
-# import pymysql
+
 
 
 def runApiCase():
